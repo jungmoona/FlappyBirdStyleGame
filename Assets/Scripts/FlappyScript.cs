@@ -15,7 +15,11 @@ public class FlappyScript : MonoBehaviour
     public Collider2D restartButtonGameCollider;
     public float VelocityPerJump = 3;
     public float XSpeed = 1;
-
+    private Rigidbody2D rbody;
+    private void Awake()
+    {
+        rbody = GetComponent<Rigidbody2D>();
+    }
     // Use this for initialization
     void Start()
     {
@@ -85,8 +89,8 @@ public class FlappyScript : MonoBehaviour
         //just jump up and down on intro screen
         if (GameStateManager.GameState == GameState.Intro)
         {
-            if (GetComponent<Rigidbody2D>().velocity.y < -1) //when the speed drops, give a boost
-                GetComponent<Rigidbody2D>().AddForce(new Vector2(0, GetComponent<Rigidbody2D>().mass * 5500 * Time.deltaTime)); //lots of play and stop 
+            if (rbody.velocity.y < -1) //when the speed drops, give a boost
+                rbody.AddForce(new Vector2(0, rbody.mass * 5500 * Time.deltaTime)); //lots of play and stop 
                                                         //and play and stop etc to find this value, feel free to modify
         }
         else if (GameStateManager.GameState == GameState.Playing || GameStateManager.GameState == GameState.Dead)
@@ -111,7 +115,7 @@ public class FlappyScript : MonoBehaviour
 
     void BoostOnYAxis()
     {
-        GetComponent<Rigidbody2D>().velocity = new Vector2(0, VelocityPerJump);
+        rbody.velocity = new Vector2(0, VelocityPerJump);
         GetComponent<AudioSource>().PlayOneShot(FlyAudioClip);
     }
 
@@ -122,7 +126,7 @@ public class FlappyScript : MonoBehaviour
     /// </summary>
     private void FixFlappyRotation()
     {
-        if (GetComponent<Rigidbody2D>().velocity.y > 0) flappyYAxisTravelState = FlappyYAxisTravelState.GoingUp;
+        if (rbody.velocity.y > 0) flappyYAxisTravelState = FlappyYAxisTravelState.GoingUp;
         else flappyYAxisTravelState = FlappyYAxisTravelState.GoingDown;
 
         float degreesToAdd = 0;
