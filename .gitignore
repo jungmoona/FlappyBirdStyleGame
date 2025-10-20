@@ -53,3 +53,4 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 Logs/
+.vs/
